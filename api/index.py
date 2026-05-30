@@ -1,7 +1,7 @@
 import io
 import os
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
-from fastapi.responses import StreamingResponse, HTMLResponse
+from fastapi.responses import StreamingResponse, HTMLResponse, PlainTextResponse, Response
 from PIL import Image, ImageFilter, ImageEnhance, ImageDraw, ImageFont
 from typing import Optional
 
@@ -182,6 +182,31 @@ def streaming_response(output: bytes, mime: str, filename: str, orig_size: int) 
             "X-Output-Size": str(len(output)),
         },
     )
+
+
+@app.get("/robots.txt", response_class=PlainTextResponse)
+async def robots():
+    content = """User-agent: *
+Allow: /
+
+Sitemap: https://slimpic.startuprecipe.co.kr/sitemap.xml
+"""
+    return PlainTextResponse(content=content, media_type="text/plain")
+
+
+@app.get("/sitemap.xml")
+async def sitemap():
+    content = """<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://slimpic.startuprecipe.co.kr/</loc>
+    <lastmod>2025-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
+"""
+    return Response(content=content, media_type="application/xml")
 
 
 @app.get("/", response_class=HTMLResponse)

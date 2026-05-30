@@ -3,20 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SlimPic — 이미지 최적화 & 포맷 변환</title>
+  <meta name="description" content="SlimPic — 무료 온라인 이미지 포맷 변환 및 최적화 도구. JPG, PNG, WebP, AVIF, HEIC 등 다양한 포맷 지원. 서버에 파일을 저장하지 않는 안전한 서버리스 환경." />
+  <meta name="keywords" content="이미지 변환, 이미지 최적화, WebP 변환, PNG to JPG, 이미지 압축, AVIF, HEIC 변환, 무료 이미지 도구" />
+  <title>SlimPic — 이미지 최적화 & 포맷 변환 | 무료 온라인 도구</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- ============================================================
+       Google AdSense
+       아래 주석을 해제하고 ca-pub-XXXXXXXXXXXXXXXX 를 실제 Publisher ID로 교체하세요.
+       AdSense 승인 후 자동 광고가 활성화됩니다.
+  ===============================================================
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+       crossorigin="anonymous"></script>
+  -->
+
   <style>
     *, *::before, *::after { font-family: 'Inter', system-ui, sans-serif; box-sizing: border-box; }
 
-    /* ── Scrollbar ── */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #020617; }
     ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
 
-    /* ── Brand gradient ── */
     .brand-text {
       background: linear-gradient(135deg, #818cf8 0%, #6366f1 45%, #a78bfa 100%);
       -webkit-background-clip: text;
@@ -24,7 +34,6 @@
       background-clip: text;
     }
 
-    /* ── Glassmorphism header ── */
     .glass-header {
       background: rgba(2, 6, 23, 0.80);
       backdrop-filter: blur(12px);
@@ -32,7 +41,6 @@
       border-bottom: 1px solid rgba(99, 102, 241, 0.12);
     }
 
-    /* ── Drop zone ── */
     .drop-zone {
       border: 2px dashed #334155;
       transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
@@ -43,15 +51,11 @@
       transform: scale(1.008);
     }
 
-    /* ── Buttons ── */
     .btn-indigo {
       background: linear-gradient(135deg, #6366f1, #4f46e5);
       transition: filter 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
     }
-    .btn-indigo:hover:not(:disabled) {
-      filter: brightness(1.12);
-      box-shadow: 0 6px 24px rgba(99, 102, 241, 0.45);
-    }
+    .btn-indigo:hover:not(:disabled) { filter: brightness(1.12); box-shadow: 0 6px 24px rgba(99,102,241,0.45); }
     .btn-indigo:active:not(:disabled) { transform: scale(0.96); }
     .btn-indigo:disabled { opacity: 0.45; cursor: not-allowed; }
 
@@ -59,14 +63,10 @@
       background: linear-gradient(135deg, #0ea5e9, #0284c7);
       transition: filter 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
     }
-    .btn-cyan:hover:not(:disabled) {
-      filter: brightness(1.12);
-      box-shadow: 0 6px 24px rgba(14, 165, 233, 0.4);
-    }
+    .btn-cyan:hover:not(:disabled) { filter: brightness(1.12); box-shadow: 0 6px 24px rgba(14,165,233,0.4); }
     .btn-cyan:active:not(:disabled) { transform: scale(0.96); }
     .btn-cyan:disabled { opacity: 0.45; cursor: not-allowed; }
 
-    /* ── Inputs ── */
     .field {
       background: #1e293b;
       border: 1px solid #334155;
@@ -75,22 +75,12 @@
       transition: border-color 0.15s ease, box-shadow 0.15s ease;
       outline: none;
     }
-    .field:focus {
-      border-color: #6366f1;
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
-    }
+    .field:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,0.18); }
     .field::placeholder { color: #475569; }
-
     select.field option { background: #1e293b; color: #f1f5f9; }
 
-    /* ── Cards ── */
-    .card {
-      background: #0f172a;
-      border: 1px solid #1e293b;
-      border-radius: 1rem;
-    }
+    .card { background: #0f172a; border: 1px solid #1e293b; border-radius: 1rem; }
 
-    /* ── Accordion ── */
     .accordion-body {
       display: grid;
       grid-template-rows: 0fr;
@@ -101,7 +91,6 @@
     .chevron { transition: transform 0.28s ease; }
     .chevron.open { transform: rotate(180deg); }
 
-    /* ── Filter pills ── */
     .pill {
       cursor: pointer;
       border: 1px solid #334155;
@@ -115,38 +104,80 @@
       user-select: none;
     }
     .pill:hover { border-color: #6366f1; color: #a5b4fc; }
-    .pill.on {
-      border-color: #6366f1;
-      background: rgba(99, 102, 241, 0.15);
-      color: #a5b4fc;
-    }
+    .pill.on { border-color: #6366f1; background: rgba(99,102,241,0.15); color: #a5b4fc; }
 
-    /* ── Spinner ── */
     @keyframes spin { to { transform: rotate(360deg); } }
     .spin { animation: spin 0.75s linear infinite; }
 
-    /* ── Fade in ── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
     }
     .fade-up { animation: fadeUp 0.35s ease forwards; }
 
-    /* ── Progress bar ── */
     .bar-track { height: 5px; background: #1e293b; border-radius: 9999px; overflow: hidden; }
-    .bar-fill  { height: 100%; background: linear-gradient(90deg, #6366f1, #818cf8); border-radius: 9999px; transition: width 0.55s ease; }
+    .bar-fill  { height: 100%; background: linear-gradient(90deg,#6366f1,#818cf8); border-radius: 9999px; transition: width 0.55s ease; }
 
-    /* ── Preview image ── */
     .thumb { max-height: 200px; object-fit: contain; }
-
-    /* ── Number input spin hide ── */
     input[type=number]::-webkit-inner-spin-button { opacity: 0.3; }
-
-    /* ── Range accent ── */
     input[type=range] { accent-color: #6366f1; cursor: pointer; }
 
-    /* ── Divider ── */
-    .divider { border-color: #1e293b; }
+    /* ── Guide section ── */
+    .guide-section { background: #080e1a; border-top: 1px solid #1e293b; }
+    .guide-h3 { font-size: 1.05rem; font-weight: 700; color: #e2e8f0; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.5rem; }
+    .guide-p  { font-size: 0.875rem; line-height: 1.75; color: #94a3b8; margin-bottom: 0.5rem; }
+    .guide-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 9999px;
+      background: rgba(99,102,241,0.15);
+      color: #a5b4fc;
+      border: 1px solid rgba(99,102,241,0.25);
+      margin-right: 0.3rem;
+      margin-bottom: 0.3rem;
+    }
+
+    /* ── Modal ── */
+    .modal-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(2,6,23,0.85);
+      backdrop-filter: blur(6px);
+      z-index: 100;
+      display: flex; align-items: center; justify-content: center;
+      padding: 1rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .modal-backdrop.show { opacity: 1; pointer-events: auto; }
+    .modal-box {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 1.25rem;
+      width: 100%; max-width: 680px;
+      max-height: 85vh;
+      overflow-y: auto;
+      transform: translateY(16px);
+      transition: transform 0.2s ease;
+    }
+    .modal-backdrop.show .modal-box { transform: translateY(0); }
+    .modal-box::-webkit-scrollbar { width: 5px; }
+    .modal-box::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+
+    .modal-h2 { font-size: 1.2rem; font-weight: 800; color: #e2e8f0; }
+    .modal-h3 { font-size: 0.9rem; font-weight: 700; color: #c7d2fe; margin: 1.2rem 0 0.4rem; }
+    .modal-p  { font-size: 0.83rem; line-height: 1.75; color: #94a3b8; margin-bottom: 0.5rem; }
+
+    /* ── Footer links ── */
+    .footer-link {
+      color: #475569;
+      font-size: 0.78rem;
+      transition: color 0.15s;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .footer-link:hover { color: #a5b4fc; }
   </style>
 </head>
 <body class="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
@@ -170,14 +201,12 @@
     <p class="text-slate-400 text-base font-light max-w-sm mx-auto">빠르고 안전한 이미지 포맷 변환 &amp; 최적화 도구</p>
   </section>
 
-  <!-- ── Main content ── -->
-  <main class="flex-1 w-full max-w-2xl mx-auto px-4 pb-14 flex flex-col gap-4">
+  <!-- ── Main Tool ── -->
+  <main class="w-full max-w-2xl mx-auto px-4 pb-6 flex flex-col gap-4">
 
-    <!-- Drop Zone card -->
+    <!-- Drop Zone -->
     <div class="card p-5 fade-up">
-      <div id="dropZone"
-        class="drop-zone rounded-xl p-10 flex flex-col items-center justify-center gap-3 cursor-pointer select-none">
-        <!-- Upload icon -->
+      <div id="dropZone" class="drop-zone rounded-xl p-10 flex flex-col items-center justify-center gap-3 cursor-pointer select-none">
         <div id="dropIconWrap" class="w-14 h-14 rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center">
           <svg id="dropSvg" class="w-7 h-7 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
@@ -189,8 +218,6 @@
         </div>
         <input type="file" id="fileInput" accept="image/*" class="hidden" />
       </div>
-
-      <!-- Preview -->
       <div id="previewArea" class="hidden mt-5 flex flex-col items-center gap-3 fade-up">
         <img id="previewImg" class="thumb rounded-lg border border-slate-700 shadow-lg" alt="미리보기" />
         <div class="flex items-center gap-2 text-xs text-slate-500">
@@ -202,10 +229,8 @@
       </div>
     </div>
 
-    <!-- Controls card -->
+    <!-- Controls -->
     <div class="card p-5 flex flex-col gap-4 fade-up" style="animation-delay:.06s">
-
-      <!-- Format + Quality row -->
       <div class="flex flex-col sm:flex-row gap-4">
         <div class="flex-1 flex flex-col gap-1.5">
           <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">변환 포맷</label>
@@ -220,24 +245,19 @@
           </select>
         </div>
         <div class="flex-1 flex flex-col gap-1.5">
-          <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-            품질 <span id="qualityValue" class="text-indigo-400 font-bold normal-case">85</span>
-          </label>
+          <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">품질 <span id="qualityValue" class="text-indigo-400 font-bold normal-case">85</span></label>
           <div class="flex items-center gap-3 mt-1">
             <input type="range" id="qualityRange" min="10" max="100" value="85" class="w-full" />
           </div>
-          <div class="flex justify-between text-xs text-slate-600 -mt-1">
-            <span>낮음</span><span>높음</span>
-          </div>
+          <div class="flex justify-between text-xs text-slate-600 -mt-1"><span>낮음</span><span>높음</span></div>
         </div>
       </div>
 
-      <hr class="divider border-t" />
+      <hr class="border-slate-800" />
 
-      <!-- ── Accordion: 편집 도구 ── -->
+      <!-- Accordion -->
       <div class="rounded-xl border border-slate-800 overflow-hidden">
-        <button id="accordionToggle"
-          class="w-full flex items-center justify-between px-4 py-3 text-sm font-semibold text-slate-300 hover:bg-slate-800/60 transition-colors">
+        <button id="accordionToggle" class="w-full flex items-center justify-between px-4 py-3 text-sm font-semibold text-slate-300 hover:bg-slate-800/60 transition-colors">
           <span class="flex items-center gap-2.5">
             <svg class="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75"/>
@@ -249,19 +269,15 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
           </svg>
         </button>
-
         <div class="accordion-body" id="accordionBody">
           <div>
             <div class="px-4 pb-5 pt-0.5 flex flex-col gap-5 border-t border-slate-800">
-
-              <!-- Resize -->
               <div class="flex flex-col gap-2 pt-1">
                 <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">리사이즈</label>
                 <div class="flex items-center gap-3 flex-wrap">
                   <div class="field flex items-center gap-2 px-3 py-2 rounded-lg w-44">
                     <span class="text-slate-500 text-xs font-mono">W</span>
-                    <input id="resizeWidth" type="number" min="1" max="9999" placeholder="원본 유지"
-                      class="bg-transparent text-sm text-slate-100 w-full outline-none placeholder-slate-600" />
+                    <input id="resizeWidth" type="number" min="1" max="9999" placeholder="원본 유지" class="bg-transparent text-sm text-slate-100 w-full outline-none placeholder-slate-600" />
                     <span class="text-slate-500 text-xs">px</span>
                   </div>
                   <span class="text-slate-600 text-xs">→ 비율 자동 조절</span>
@@ -269,41 +285,26 @@
                 </div>
                 <p id="resizePreview" class="text-xs text-indigo-400 hidden"></p>
               </div>
-
-              <!-- Watermark -->
               <div class="flex flex-col gap-2">
                 <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">워터마크</label>
-                <input id="watermarkText" type="text" maxlength="60"
-                  placeholder="텍스트를 입력하면 우측 하단에 삽입됩니다"
-                  class="field w-full px-3.5 py-2.5 text-sm rounded-lg" />
+                <input id="watermarkText" type="text" maxlength="60" placeholder="텍스트를 입력하면 우측 하단에 삽입됩니다" class="field w-full px-3.5 py-2.5 text-sm rounded-lg" />
               </div>
-
-              <!-- Filters -->
               <div class="flex flex-col gap-2">
                 <label class="text-xs font-semibold text-slate-500 uppercase tracking-wider">필터 효과</label>
                 <div class="flex flex-wrap gap-2">
-                  <button class="pill" data-filter="grayscale">
-                    <span class="opacity-70">◼</span> 흑백
-                  </button>
-                  <button class="pill" data-filter="sharpen">
-                    <span class="opacity-70">◈</span> 선명하게
-                  </button>
-                  <button class="pill" data-filter="brighten">
-                    <span class="opacity-70">◎</span> 밝게
-                  </button>
+                  <button class="pill" data-filter="grayscale"><span class="opacity-70">◼</span> 흑백</button>
+                  <button class="pill" data-filter="sharpen"><span class="opacity-70">◈</span> 선명하게</button>
+                  <button class="pill" data-filter="brighten"><span class="opacity-70">◎</span> 밝게</button>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
       </div>
-      <!-- ── / Accordion ── -->
 
-      <!-- Action buttons -->
+      <!-- Buttons -->
       <div class="flex flex-col sm:flex-row gap-3 pt-1">
-        <button id="convertBtn" disabled
-          class="btn-indigo flex-1 py-3 rounded-xl font-semibold text-sm text-white flex items-center justify-center gap-2">
+        <button id="convertBtn" disabled class="btn-indigo flex-1 py-3 rounded-xl font-semibold text-sm text-white flex items-center justify-center gap-2">
           <span id="convertBtnIcon">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
@@ -311,8 +312,7 @@
           </span>
           <span id="convertBtnText">변환하기</span>
         </button>
-        <button id="optimizeBtn" disabled
-          class="btn-cyan flex-1 py-3 rounded-xl font-semibold text-sm text-white flex items-center justify-center gap-2">
+        <button id="optimizeBtn" disabled class="btn-cyan flex-1 py-3 rounded-xl font-semibold text-sm text-white flex items-center justify-center gap-2">
           <span id="optimizeBtnIcon">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
@@ -323,7 +323,7 @@
       </div>
     </div>
 
-    <!-- Result card -->
+    <!-- Result -->
     <div id="resultCard" class="hidden card p-5 fade-up">
       <div class="flex items-center gap-2 mb-4">
         <div class="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center">
@@ -349,18 +349,13 @@
             <span class="text-slate-500">용량 절감</span>
             <span id="ratioText" class="font-bold text-emerald-400"></span>
           </div>
-          <div class="bar-track">
-            <div id="sizeBar" class="bar-fill" style="width:0%"></div>
-          </div>
+          <div class="bar-track"><div id="sizeBar" class="bar-fill" style="width:0%"></div></div>
         </div>
-        <a id="downloadLink"
-          class="btn-indigo block text-center py-3 rounded-xl font-semibold text-sm text-white no-underline">
-          ↓ 파일 다운로드
-        </a>
+        <a id="downloadLink" class="btn-indigo block text-center py-3 rounded-xl font-semibold text-sm text-white no-underline">↓ 파일 다운로드</a>
       </div>
     </div>
 
-    <!-- Error card -->
+    <!-- Error -->
     <div id="errorCard" class="hidden rounded-xl border border-red-900/60 bg-red-950/30 p-4 fade-up">
       <div class="flex items-start gap-2.5">
         <svg class="w-4 h-4 text-red-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -372,33 +367,254 @@
 
   </main>
 
-  <!-- Footer -->
-  <footer class="border-t border-slate-800/60 py-8 px-4 text-center">
-    <div class="flex items-center justify-center gap-1.5 text-xs text-slate-600">
-      <svg class="w-3.5 h-3.5 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
-      </svg>
-      <span>SlimPic은 파일을 저장하지 않으며, 변환 즉시 삭제되는 안전한 서버리스 환경에서 작동합니다.</span>
+  <!-- ════════════════════════════════════════════════════════════
+       IMAGE OPTIMIZATION GUIDE  (SEO Content)
+  ════════════════════════════════════════════════════════════ -->
+  <section class="guide-section py-16 px-4 mt-6" aria-label="Image Optimization Guide">
+    <div class="max-w-3xl mx-auto">
+
+      <div class="text-center mb-12">
+        <span class="text-xs font-semibold text-indigo-400 uppercase tracking-widest">Knowledge Base</span>
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-100 mt-2 mb-3">Image Optimization Guide</h2>
+        <p class="text-slate-500 text-sm max-w-xl mx-auto">이미지 포맷을 올바르게 선택하면 페이지 로드 속도와 사용자 경험을 극적으로 개선할 수 있습니다. 아래 가이드에서 최신 포맷 지식과 최적화 전략을 확인하세요.</p>
+      </div>
+
+      <div class="flex flex-col gap-10">
+
+        <!-- 1 -->
+        <article>
+          <h3 class="guide-h3">
+            <span class="w-6 h-6 rounded-md bg-indigo-600/30 border border-indigo-500/30 flex items-center justify-center text-xs text-indigo-400 font-bold shrink-0">1</span>
+            WebP와 AVIF가 웹 성능(LCP)에 미치는 영향
+          </h3>
+          <p class="guide-p">Google의 Core Web Vitals 지표 중 하나인 <strong class="text-slate-300">LCP(Largest Contentful Paint)</strong>는 페이지에서 가장 큰 콘텐츠 요소가 화면에 렌더링되는 시간을 측정합니다. 이미지가 LCP 요소인 경우가 전체 웹페이지의 70% 이상을 차지하며, 이미지 파일 크기는 LCP 점수에 직접적인 영향을 미칩니다.</p>
+          <p class="guide-p"><strong class="text-slate-300">WebP</strong>는 Google이 개발한 차세대 이미지 포맷으로, 동일한 시각적 품질에서 JPEG 대비 평균 25~35%, PNG 대비 최대 80%까지 파일 크기를 줄일 수 있습니다. 현재 Chrome, Firefox, Safari, Edge 등 모든 주요 브라우저에서 지원되므로 즉시 적용 가능한 가장 현실적인 선택입니다.</p>
+          <p class="guide-p"><strong class="text-slate-300">AVIF</strong>(AV1 Image File Format)는 Netflix와 Google이 공동 개발한 더욱 최신 포맷으로, WebP보다 추가로 20~40% 더 높은 압축률을 제공합니다. 특히 그라데이션이 많은 사진이나 복잡한 색상 정보를 포함한 이미지에서 탁월한 성능을 발휘합니다. 2024년 기준 전체 브라우저 지원율이 90%를 넘어서며 상용 환경에서 충분히 활용 가능한 수준에 도달했습니다.</p>
+          <p class="guide-p">실제 사례로, e-커머스 사이트가 제품 이미지를 JPEG에서 AVIF로 전환했을 때 평균 이미지 용량이 65% 감소하고 LCP가 2.8초에서 1.4초로 절반 이하로 개선된 사례가 보고되어 있습니다. Google의 PageSpeed Insights와 Lighthouse 도구는 최신 이미지 포맷 사용을 "Serve images in next-gen formats" 권고사항으로 항상 상위에 포함시킵니다.</p>
+          <div class="mt-3 flex flex-wrap gap-1.5">
+            <span class="guide-tag">WebP</span>
+            <span class="guide-tag">AVIF</span>
+            <span class="guide-tag">LCP</span>
+            <span class="guide-tag">Core Web Vitals</span>
+            <span class="guide-tag">PageSpeed</span>
+          </div>
+        </article>
+
+        <hr class="border-slate-800/60" />
+
+        <!-- 2 -->
+        <article>
+          <h3 class="guide-h3">
+            <span class="w-6 h-6 rounded-md bg-indigo-600/30 border border-indigo-500/30 flex items-center justify-center text-xs text-indigo-400 font-bold shrink-0">2</span>
+            JPG vs PNG vs WebP: 상황별 최적의 포맷 선택법
+          </h3>
+          <p class="guide-p">이미지 포맷 선택은 "어떤 포맷이 무조건 좋다"가 아니라 <strong class="text-slate-300">사용 목적과 콘텐츠 특성</strong>에 따라 결정되어야 합니다. 잘못된 포맷 선택은 불필요한 용량 증가나 화질 저하를 유발합니다.</p>
+          <p class="guide-p"><strong class="text-slate-300">JPEG(JPG)</strong>는 사진, 풍경, 인물 이미지처럼 색상 변화가 복잡하고 자연스러운 그라데이션이 많은 콘텐츠에 적합합니다. 손실 압축 방식으로 파일 크기를 효과적으로 줄이지만, 텍스트나 선명한 경계가 있는 이미지에는 압축 아티팩트(깍두기 현상)가 나타납니다. 투명도를 지원하지 않아 배경이 있는 이미지에만 사용해야 합니다.</p>
+          <p class="guide-p"><strong class="text-slate-300">PNG</strong>는 무손실 압축 방식으로 화질 저하가 없으며 투명도(알파 채널)를 완벽하게 지원합니다. 로고, 아이콘, 스크린샷, UI 요소처럼 선명한 경계와 텍스트가 포함된 이미지에 이상적입니다. 단, 사진 이미지에 적용하면 JPEG 대비 3~5배 이상 파일이 커질 수 있습니다.</p>
+          <p class="guide-p"><strong class="text-slate-300">WebP</strong>는 손실·무손실 압축을 모두 지원하며 투명도도 처리합니다. 즉, JPEG와 PNG의 장점을 하나의 포맷으로 흡수합니다. 사진 이미지는 JPEG보다 작고, 투명 이미지는 PNG보다 작습니다. 웹 배포용 이미지라면 특별한 이유가 없는 한 WebP를 기본 포맷으로 선택하는 것을 권장합니다.</p>
+          <p class="guide-p">요약 가이드: <strong class="text-slate-300">인쇄용 고화질 원본 → TIFF</strong> / <strong class="text-slate-300">투명 배경 UI 에셋 → PNG 또는 WebP</strong> / <strong class="text-slate-300">일반 사진 웹 게시 → WebP (구형 브라우저 대응 필요 시 JPEG 병행)</strong> / <strong class="text-slate-300">최고 압축률 차세대 환경 → AVIF</strong></p>
+          <div class="mt-3 flex flex-wrap gap-1.5">
+            <span class="guide-tag">JPEG</span>
+            <span class="guide-tag">PNG</span>
+            <span class="guide-tag">WebP</span>
+            <span class="guide-tag">포맷 비교</span>
+            <span class="guide-tag">이미지 최적화</span>
+          </div>
+        </article>
+
+        <hr class="border-slate-800/60" />
+
+        <!-- 3 -->
+        <article>
+          <h3 class="guide-h3">
+            <span class="w-6 h-6 rounded-md bg-indigo-600/30 border border-indigo-500/30 flex items-center justify-center text-xs text-indigo-400 font-bold shrink-0">3</span>
+            손실 압축과 무손실 압축의 차이점
+          </h3>
+          <p class="guide-p">이미지 압축 방식은 크게 <strong class="text-slate-300">손실 압축(Lossy Compression)</strong>과 <strong class="text-slate-300">무손실 압축(Lossless Compression)</strong>으로 나뉩니다. 두 방식의 차이를 이해하면 어떤 상황에 어떤 설정을 적용해야 할지 명확히 알 수 있습니다.</p>
+          <p class="guide-p"><strong class="text-slate-300">손실 압축</strong>은 인간의 눈이 구분하기 어려운 색상 정보와 고주파 디테일을 선택적으로 제거하여 파일 크기를 크게 줄입니다. JPEG, WebP(손실 모드), AVIF 등이 이 방식을 사용합니다. SlimPic에서 품질(Quality) 슬라이더를 조절하면 손실 압축 강도를 제어합니다. 품질 85% 수준은 육안으로 원본과 거의 구분이 불가능하면서 파일 크기를 60~70% 줄이는 최적의 균형점으로 알려져 있습니다. 단, 압축 후 다시 손실 압축을 반복하면 화질이 점진적으로 저하되므로 주의가 필요합니다.</p>
+          <p class="guide-p"><strong class="text-slate-300">무손실 압축</strong>은 원본 이미지의 모든 픽셀 정보를 완벽하게 보존하면서 중복 데이터를 수학적 알고리즘으로 압축합니다. PNG, WebP(무손실 모드), TIFF 등이 이 방식을 지원합니다. 사진 원본 아카이브, 의료·법적 문서 이미지, 반복 편집이 필요한 소스 파일에는 반드시 무손실 포맷을 사용해야 합니다.</p>
+          <p class="guide-p">실무 팁: 웹사이트 게시용 이미지는 품질 80~90%의 WebP 손실 압축이 최적입니다. 원본 보관용은 PNG 또는 TIFF로 별도 저장하고, 웹 배포 시에는 손실 압축된 WebP를 사용하는 <strong class="text-slate-300">이중 보관 전략</strong>을 권장합니다.</p>
+          <div class="mt-3 flex flex-wrap gap-1.5">
+            <span class="guide-tag">손실 압축</span>
+            <span class="guide-tag">무손실 압축</span>
+            <span class="guide-tag">Lossy</span>
+            <span class="guide-tag">Lossless</span>
+            <span class="guide-tag">화질 설정</span>
+          </div>
+        </article>
+
+        <hr class="border-slate-800/60" />
+
+        <!-- 4 -->
+        <article>
+          <h3 class="guide-h3">
+            <span class="w-6 h-6 rounded-md bg-emerald-600/30 border border-emerald-500/30 flex items-center justify-center text-xs text-emerald-400 font-bold shrink-0">
+              <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/></svg>
+            </span>
+            왜 SlimPic은 서버에 파일을 저장하지 않는가?
+          </h3>
+          <p class="guide-p">인터넷에서 이미지를 변환하기 위해 파일을 업로드할 때 많은 서비스들이 서버에 파일을 저장합니다. 이는 처리 속도나 기능 구현의 편의를 위한 것이지만, 사용자 입장에서는 심각한 개인정보 위험을 내포합니다. 업로드된 이미지에는 EXIF 메타데이터에 GPS 위치 정보, 촬영 기기 정보, 날짜/시간이 담겨 있을 수 있으며, 사진 속 인물의 신원 노출 위험도 존재합니다.</p>
+          <p class="guide-p">SlimPic은 설계 단계부터 <strong class="text-slate-300">Zero Storage 원칙</strong>을 적용했습니다. 사용자가 이미지를 업로드하면 해당 파일은 서버의 메모리(RAM)에만 일시적으로 로드되어 처리되고, 변환이 완료된 즉시 메모리에서 소멸됩니다. 디스크에는 어떠한 형태로도 기록되지 않습니다.</p>
+          <p class="guide-p">기술적으로 이는 Python의 <code class="bg-slate-800 text-indigo-300 px-1.5 py-0.5 rounded text-xs">io.BytesIO</code> 인메모리 스트림을 활용하여 구현됩니다. 파일 업로드부터 변환 처리, 결과물 스트리밍 다운로드까지 모든 과정이 서버의 임시 메모리 공간에서만 처리되며, HTTP 응답이 완료된 시점에 가비지 컬렉션에 의해 자동 삭제됩니다. Vercel의 Serverless 환경은 각 요청이 격리된 실행 환경에서 처리되기 때문에 이 보안 모델을 더욱 강화합니다.</p>
+          <p class="guide-p">이 구조 덕분에 SlimPic에는 파일 저장소가 존재하지 않으며, 설령 서버에 보안 침해가 발생하더라도 사용자의 이미지 데이터는 이미 소멸된 상태입니다. 개인 사진, 의료 이미지, 기업 기밀 문서 등 민감한 파일도 안전하게 변환할 수 있습니다.</p>
+          <div class="mt-3 flex flex-wrap gap-1.5">
+            <span class="guide-tag">Zero Storage</span>
+            <span class="guide-tag">개인정보 보호</span>
+            <span class="guide-tag">Serverless</span>
+            <span class="guide-tag">보안</span>
+            <span class="guide-tag">인메모리 처리</span>
+          </div>
+        </article>
+
+      </div>
     </div>
-    <p class="text-xs text-slate-700 mt-1">모든 처리는 메모리에서만 이루어지며 서버 디스크에 기록되지 않습니다.</p>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="border-t border-slate-800/50 bg-slate-950 py-10 px-4">
+    <div class="max-w-3xl mx-auto">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-2.5">
+          <div class="w-6 h-6 rounded-md bg-indigo-600 flex items-center justify-center">
+            <svg class="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <span class="text-sm font-bold brand-text">SlimPic</span>
+          <span class="text-xs text-slate-600">© 2025</span>
+        </div>
+
+        <nav class="flex items-center gap-5" aria-label="Footer navigation">
+          <button class="footer-link" onclick="openModal('aboutModal')">서비스 소개</button>
+          <span class="text-slate-700">·</span>
+          <button class="footer-link" onclick="openModal('privacyModal')">개인정보처리방침</button>
+          <span class="text-slate-700">·</span>
+          <button class="footer-link" onclick="openModal('tosModal')">이용약관</button>
+        </nav>
+      </div>
+
+      <div class="mt-6 pt-6 border-t border-slate-800/50 flex items-start gap-2 text-xs text-slate-600">
+        <svg class="w-3.5 h-3.5 text-slate-700 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"/>
+        </svg>
+        <span>SlimPic은 파일을 저장하지 않으며, 변환 즉시 삭제되는 안전한 서버리스 환경에서 작동합니다. 모든 처리는 메모리에서만 이루어지며 서버 디스크에 기록되지 않습니다.</span>
+      </div>
+    </div>
   </footer>
 
-<script>
-  // ── DOM refs ──────────────────────────────────────────────────
-  const dropZone      = document.getElementById('dropZone');
-  const fileInput     = document.getElementById('fileInput');
-  const previewArea   = document.getElementById('previewArea');
-  const previewImg    = document.getElementById('previewImg');
-  const previewName   = document.getElementById('previewName');
-  const previewSize   = document.getElementById('previewSize');
-  const previewDims   = document.getElementById('previewDims');
-  const dropText      = document.getElementById('dropText');
-  const dropIconWrap  = document.getElementById('dropIconWrap');
-  const dropSvg       = document.getElementById('dropSvg');
+  <!-- ════════════════════════════════════════════════════════════
+       MODALS
+  ════════════════════════════════════════════════════════════ -->
 
-  const formatSelect  = document.getElementById('formatSelect');
-  const qualityRange  = document.getElementById('qualityRange');
-  const qualityValue  = document.getElementById('qualityValue');
+  <!-- About Us -->
+  <div id="aboutModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+    <div class="modal-box">
+      <div class="px-6 py-5 border-b border-slate-800 flex items-center justify-between sticky top-0 bg-slate-900/95 backdrop-blur rounded-t-2xl">
+        <h2 class="modal-h2" id="aboutTitle">서비스 소개</h2>
+        <button onclick="closeModal('aboutModal')" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center transition-colors">
+          <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="px-6 py-6">
+        <h3 class="modal-h3">SlimPic의 탄생 배경</h3>
+        <p class="modal-p">SlimPic은 "이미지 변환은 빠르고, 간단하고, 무엇보다 안전해야 한다"는 단순한 믿음에서 출발했습니다. 기존의 이미지 변환 서비스들은 사용자의 파일을 서버에 업로드하고 저장하는 방식으로 동작했으며, 이는 개인정보 침해와 데이터 유출의 위험을 항상 내포하고 있었습니다. 개인 사진 한 장을 WebP로 바꾸기 위해 왜 내 소중한 이미지를 낯선 서버에 맡겨야 할까요?</p>
+        <p class="modal-p">이 질문에서 SlimPic이 시작되었습니다. 우리는 서버리스(Serverless) 아키텍처와 인메모리 처리 방식을 결합하여, 파일을 단 한 바이트도 디스크에 기록하지 않으면서 강력한 이미지 변환 기능을 제공하는 도구를 만들었습니다.</p>
+        <h3 class="modal-h3">지원 기능</h3>
+        <p class="modal-p">SlimPic은 JPG, PNG, WebP, AVIF, HEIC, GIF, BMP, TIFF 등 주요 이미지 포맷 간 자유로운 변환을 지원합니다. 리사이즈, 워터마크 삽입, 흑백/선명도/밝기 필터 등 기본적인 편집 기능도 하나의 변환 과정에 통합되어 있습니다. 'SlimPic Optimize' 기능은 클릭 한 번으로 최적화된 WebP 파일을 생성합니다.</p>
+        <h3 class="modal-h3">우리의 비전</h3>
+        <p class="modal-p">SlimPic은 개인 사용자부터 전문 개발자, 디자이너까지 누구나 별도의 소프트웨어 설치 없이 브라우저만으로 고품질 이미지 최적화를 수행할 수 있는 환경을 만들어 나가고 있습니다. 앞으로도 사용자의 프라이버시를 최우선으로 하는 투명하고 신뢰할 수 있는 도구로 발전할 것입니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Privacy Policy -->
+  <div id="privacyModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="privacyTitle">
+    <div class="modal-box">
+      <div class="px-6 py-5 border-b border-slate-800 flex items-center justify-between sticky top-0 bg-slate-900/95 backdrop-blur rounded-t-2xl">
+        <h2 class="modal-h2" id="privacyTitle">개인정보처리방침</h2>
+        <button onclick="closeModal('privacyModal')" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center transition-colors">
+          <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="px-6 py-6">
+        <p class="modal-p text-slate-500 text-xs">최종 업데이트: 2025년 1월</p>
+        <h3 class="modal-h3">1. 이미지 파일 처리 방침 (핵심 원칙)</h3>
+        <p class="modal-p">SlimPic은 사용자가 업로드하는 이미지 파일을 <strong class="text-slate-300">서버의 디스크(영구 저장소)에 일체 저장하지 않습니다.</strong> 업로드된 이미지는 오직 변환 처리를 위해 서버의 휘발성 메모리(RAM)에만 일시적으로 로드되며, HTTP 응답이 완료되는 즉시 해당 메모리 영역은 해제되어 복구 불가능하게 소멸됩니다. 이 과정은 브라우저 세션 내에서 완전히 종료됩니다.</p>
+        <h3 class="modal-h3">2. 수집하는 정보</h3>
+        <p class="modal-p">SlimPic은 서비스 운영을 위해 다음과 같은 최소한의 정보만을 처리할 수 있습니다: 서버 로그에 기록되는 요청 IP 주소 및 타임스탬프(보안 목적, 일반적으로 30일 이내 자동 삭제), 브라우저 종류 및 운영체제 정보(기술 호환성 파악 목적). 이미지 파일의 내용, 메타데이터, 파일명은 로그에 기록되지 않습니다.</p>
+        <h3 class="modal-h3">3. Google AdSense 및 쿠키</h3>
+        <p class="modal-p">본 웹사이트는 Google AdSense를 통해 광고를 게재할 수 있습니다. Google AdSense는 사용자의 관심사에 맞는 광고를 제공하기 위해 쿠키(Cookie)를 사용합니다. 이 쿠키는 Google의 광고 파트너 사이트에서의 방문 정보를 포함할 수 있습니다. 사용자는 <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener" class="text-indigo-400 hover:text-indigo-300 underline">Google 광고 설정</a>에서 개인화 광고를 비활성화할 수 있습니다. Google의 개인정보처리방침은 <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="text-indigo-400 hover:text-indigo-300 underline">policies.google.com/privacy</a>에서 확인할 수 있습니다.</p>
+        <h3 class="modal-h3">4. 제3자 데이터 공유</h3>
+        <p class="modal-p">SlimPic은 사용자의 이미지 파일 또는 개인식별 정보를 제3자에게 판매하거나 공유하지 않습니다. 법적 의무가 있는 경우를 제외하고 어떠한 형태의 데이터도 외부로 전송되지 않습니다.</p>
+        <h3 class="modal-h3">5. 미성년자 보호</h3>
+        <p class="modal-p">SlimPic은 만 14세 미만의 아동으로부터 의도적으로 개인정보를 수집하지 않습니다.</p>
+        <h3 class="modal-h3">6. 방침 변경</h3>
+        <p class="modal-p">본 개인정보처리방침은 서비스 변경 시 업데이트될 수 있으며, 중요한 변경 사항은 본 페이지 상단의 날짜로 고지됩니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Terms of Service -->
+  <div id="tosModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="tosTitle">
+    <div class="modal-box">
+      <div class="px-6 py-5 border-b border-slate-800 flex items-center justify-between sticky top-0 bg-slate-900/95 backdrop-blur rounded-t-2xl">
+        <h2 class="modal-h2" id="tosTitle">이용약관</h2>
+        <button onclick="closeModal('tosModal')" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center transition-colors">
+          <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="px-6 py-6">
+        <p class="modal-p text-slate-500 text-xs">최종 업데이트: 2025년 1월</p>
+        <h3 class="modal-h3">1. 서비스 이용 동의</h3>
+        <p class="modal-p">SlimPic 웹사이트(이하 "서비스")를 이용함으로써 귀하는 본 이용약관에 동의하는 것으로 간주됩니다. 본 약관에 동의하지 않으시면 서비스 이용을 중단해 주시기 바랍니다.</p>
+        <h3 class="modal-h3">2. 무료 이용 원칙</h3>
+        <p class="modal-p">SlimPic은 현재 모든 기능을 무료로 제공합니다. 서비스 운영 비용 충당을 위해 Google AdSense를 통한 광고가 게재될 수 있으며, 이는 서비스의 무료 이용을 유지하기 위한 수단입니다. SlimPic은 사전 고지 없이 유료 전환하거나 기능을 제한할 권리를 보유하나, 변경 시 사용자에게 충분한 사전 안내를 제공하기 위해 노력합니다.</p>
+        <h3 class="modal-h3">3. 사용자의 책임</h3>
+        <p class="modal-p">사용자는 자신이 업로드하는 이미지에 대한 모든 저작권 및 사용 권한을 보유하거나, 해당 이미지를 처리할 정당한 권한이 있음을 확인합니다. 타인의 저작권을 침해하는 이미지, 불법적인 콘텐츠, 개인정보를 무단으로 포함한 이미지의 업로드는 금지됩니다. 이를 위반함으로써 발생하는 모든 법적 책임은 해당 사용자에게 귀속됩니다.</p>
+        <h3 class="modal-h3">4. 서비스 책임 한계</h3>
+        <p class="modal-p">SlimPic은 서비스의 연속적인 가용성을 보장하지 않습니다. 서비스 중단, 데이터 손실, 변환 오류로 인한 직접적·간접적 손해에 대해 법이 허용하는 최대 범위 내에서 책임을 부담하지 않습니다. 중요한 이미지 파일은 반드시 원본을 별도로 백업한 후 서비스를 이용하시기 바랍니다.</p>
+        <h3 class="modal-h3">5. 서비스 변경 및 종료</h3>
+        <p class="modal-p">SlimPic은 사전 통보 없이 서비스의 일부 또는 전체를 변경하거나 종료할 권리를 보유합니다. 서비스 종료 시에는 가능한 한 30일 전 공지를 제공하기 위해 노력합니다.</p>
+        <h3 class="modal-h3">6. 준거법</h3>
+        <p class="modal-p">본 약관은 대한민국 법률에 따라 해석되며, 분쟁 발생 시 대한민국 법원을 관할 법원으로 합니다.</p>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // ── Modal ─────────────────────────────────────────────────────
+  function openModal(id) {
+    const m = document.getElementById(id);
+    m.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('show');
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('.modal-backdrop').forEach(m => {
+    m.addEventListener('click', e => { if (e.target === m) closeModal(m.id); });
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape')
+      document.querySelectorAll('.modal-backdrop.show').forEach(m => closeModal(m.id));
+  });
+
+  // ── DOM refs ──────────────────────────────────────────────────
+  const dropZone     = document.getElementById('dropZone');
+  const fileInput    = document.getElementById('fileInput');
+  const previewArea  = document.getElementById('previewArea');
+  const previewImg   = document.getElementById('previewImg');
+  const previewName  = document.getElementById('previewName');
+  const previewSize  = document.getElementById('previewSize');
+  const previewDims  = document.getElementById('previewDims');
+  const dropText     = document.getElementById('dropText');
+  const dropIconWrap = document.getElementById('dropIconWrap');
+  const dropSvg      = document.getElementById('dropSvg');
+
+  const formatSelect = document.getElementById('formatSelect');
+  const qualityRange = document.getElementById('qualityRange');
+  const qualityValue = document.getElementById('qualityValue');
 
   const accordionToggle = document.getElementById('accordionToggle');
   const accordionBody   = document.getElementById('accordionBody');
@@ -424,65 +640,47 @@
   const ratioText    = document.getElementById('ratioText');
   const sizeBar      = document.getElementById('sizeBar');
   const downloadLink = document.getElementById('downloadLink');
+  const errorCard    = document.getElementById('errorCard');
+  const errorText    = document.getElementById('errorText');
 
-  const errorCard = document.getElementById('errorCard');
-  const errorText = document.getElementById('errorText');
-
-  // ── State ─────────────────────────────────────────────────────
   const MAX_SIZE = 10 * 1024 * 1024;
-  let selectedFile = null;
-  let origW = 0, origH = 0;
+  let selectedFile = null, origW = 0, origH = 0;
   let activeFilters = new Set();
 
-  // ── Helpers ───────────────────────────────────────────────────
-  const fmtBytes = b =>
-    b < 1024 ? `${b} B` : b < 1048576 ? `${(b/1024).toFixed(1)} KB` : `${(b/1048576).toFixed(2)} MB`;
-
+  const fmtBytes = b => b < 1024 ? `${b} B` : b < 1048576 ? `${(b/1024).toFixed(1)} KB` : `${(b/1048576).toFixed(2)} MB`;
   const showError = msg => { errorText.textContent = msg; errorCard.classList.remove('hidden'); };
-  const hideError = ()  => errorCard.classList.add('hidden');
+  const hideError  = () => errorCard.classList.add('hidden');
   const hideResult = () => resultCard.classList.add('hidden');
 
-  // Indigo spinner SVG
-  const spinnerHTML = `<svg class="spin w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-    <path stroke-linecap="round" d="M12 2a10 10 0 0 1 10 10" stroke="#a5b4fc"/>
-  </svg>`;
+  const spinnerHTML = `<svg class="spin w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="#a5b4fc" stroke-width="2.5"><path stroke-linecap="round" d="M12 2a10 10 0 0 1 10 10"/></svg>`;
+  const origConvertIcon  = convertBtnIcon.innerHTML;
+  const origOptimizeIcon = optimizeBtnIcon.innerHTML;
 
-  // ── Quality slider ─────────────────────────────────────────────
   qualityRange.addEventListener('input', () => { qualityValue.textContent = qualityRange.value; });
 
-  // ── Accordion ─────────────────────────────────────────────────
   accordionToggle.addEventListener('click', () => {
     const open = accordionBody.classList.toggle('open');
     chevron.classList.toggle('open', open);
   });
 
-  // ── Edit badge ─────────────────────────────────────────────────
   const updateBadge = () => {
-    const active = resizeWidth.value || watermarkText.value.trim() || activeFilters.size;
-    editBadge.classList.toggle('hidden', !active);
+    editBadge.classList.toggle('hidden', !(resizeWidth.value || watermarkText.value.trim() || activeFilters.size));
   };
   resizeWidth.addEventListener('input', updateBadge);
   watermarkText.addEventListener('input', updateBadge);
 
-  // ── Resize preview ─────────────────────────────────────────────
   resizeWidth.addEventListener('input', () => {
     const w = parseInt(resizeWidth.value);
     if (w > 0 && origW > 0) {
-      const h = Math.round(origH * (w / origW));
-      resizePreview.textContent = `→ ${w} × ${h} px`;
+      resizePreview.textContent = `→ ${w} × ${Math.round(origH * w / origW)} px`;
       resizePreview.classList.remove('hidden');
-    } else {
-      resizePreview.classList.add('hidden');
-    }
+    } else { resizePreview.classList.add('hidden'); }
     updateBadge();
   });
   resetResize.addEventListener('click', () => {
-    resizeWidth.value = '';
-    resizePreview.classList.add('hidden');
-    updateBadge();
+    resizeWidth.value = ''; resizePreview.classList.add('hidden'); updateBadge();
   });
 
-  // ── Filter pills ───────────────────────────────────────────────
   pills.forEach(p => p.addEventListener('click', () => {
     const f = p.dataset.filter;
     activeFilters.has(f) ? (activeFilters.delete(f), p.classList.remove('on'))
@@ -490,14 +688,10 @@
     updateBadge();
   }));
 
-  // ── Drop zone ──────────────────────────────────────────────────
   dropZone.addEventListener('click', () => fileInput.click());
   dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
   dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-  dropZone.addEventListener('drop', e => {
-    e.preventDefault(); dropZone.classList.remove('dragover');
-    if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
-  });
+  dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.classList.remove('dragover'); if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
   fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
 
   function handleFile(file) {
@@ -505,40 +699,29 @@
     if (!file.type.startsWith('image/') && !file.name.toLowerCase().match(/\.(heic|heif|avif)$/))
       return showError('이미지 파일만 업로드할 수 있습니다.');
     if (file.size > MAX_SIZE) return showError('파일 크기가 10MB를 초과합니다.');
-
     selectedFile = file;
     previewName.textContent = file.name;
     previewSize.textContent = fmtBytes(file.size);
     dropText.textContent    = '다른 파일을 선택하려면 클릭하세요';
-
-    // Switch icon to check
-    dropIconWrap.classList.replace('bg-slate-800', 'bg-indigo-600/20');
-    dropIconWrap.classList.replace('border-slate-700', 'border-indigo-600/40');
+    dropIconWrap.style.background = 'rgba(99,102,241,0.15)';
+    dropIconWrap.style.borderColor = 'rgba(99,102,241,0.4)';
     dropSvg.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>`;
     dropSvg.setAttribute('stroke', '#818cf8');
-
     const reader = new FileReader();
     reader.onload = e => {
       previewImg.src = e.target.result;
       previewArea.classList.remove('hidden');
       const tmp = new Image();
-      tmp.onload = () => {
-        origW = tmp.naturalWidth; origH = tmp.naturalHeight;
-        previewDims.textContent = `· ${origW} × ${origH}`;
-        resizeWidth.dispatchEvent(new Event('input'));
-      };
+      tmp.onload = () => { origW = tmp.naturalWidth; origH = tmp.naturalHeight; previewDims.textContent = `· ${origW} × ${origH}`; resizeWidth.dispatchEvent(new Event('input')); };
       tmp.src = e.target.result;
     };
     reader.readAsDataURL(file);
-
-    convertBtn.disabled = false;
-    optimizeBtn.disabled = false;
+    convertBtn.disabled = false; optimizeBtn.disabled = false;
   }
 
-  // ── FormData builder ───────────────────────────────────────────
   function buildFD(extra = {}) {
     const fd = new FormData();
-    fd.append('file',         selectedFile);
+    fd.append('file', selectedFile);
     fd.append('resize_width', parseInt(resizeWidth.value) || 0);
     fd.append('watermark',    watermarkText.value.trim());
     fd.append('filters',      [...activeFilters].join(','));
@@ -546,23 +729,9 @@
     return fd;
   }
 
-  // ── Loading state helpers ──────────────────────────────────────
-  // Store original SVG HTML for each button icon
-  const origConvertIcon  = convertBtnIcon.innerHTML;
-  const origOptimizeIcon = optimizeBtnIcon.innerHTML;
+  function setLoading(btn, iconEl, textEl, label) { btn.disabled = true; iconEl.innerHTML = spinnerHTML; textEl.textContent = label; }
+  function resetBtn(btn, iconEl, origIcon, textEl, label) { btn.disabled = !selectedFile; iconEl.innerHTML = origIcon; textEl.textContent = label; }
 
-  function setLoading(btn, iconEl, textEl, label) {
-    btn.disabled = true;
-    iconEl.innerHTML = spinnerHTML;
-    textEl.textContent = label;
-  }
-  function resetBtn(btn, iconEl, origIcon, textEl, label) {
-    btn.disabled = !selectedFile;
-    iconEl.innerHTML = origIcon;
-    textEl.textContent = label;
-  }
-
-  // ── Show result ────────────────────────────────────────────────
   function showResult(res, blob, filename) {
     const orig = parseInt(res.headers.get('X-Original-Size') || '0');
     const out  = parseInt(res.headers.get('X-Output-Size')   || '0');
@@ -572,24 +741,18 @@
     ratioText.textContent = saved >= 0.5 ? `-${saved.toFixed(1)}% 절약` : '변환 완료';
     ratioText.className = saved >= 0.5 ? 'font-bold text-emerald-400' : 'font-bold text-sky-400';
     sizeBar.style.width = `${Math.min(100, out / Math.max(orig, 1) * 100)}%`;
-    downloadLink.href     = URL.createObjectURL(blob);
+    downloadLink.href = URL.createObjectURL(blob);
     downloadLink.download = filename;
     resultCard.classList.remove('hidden');
     resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
-  // ── Fetch helper ───────────────────────────────────────────────
   async function doRequest(url, fd) {
     const res = await fetch(url, { method: 'POST', body: fd });
-    if (!res.ok) {
-      let msg = `서버 오류 (${res.status})`;
-      try { const j = await res.json(); msg = j.detail || msg; } catch {}
-      throw new Error(msg);
-    }
+    if (!res.ok) { let msg = `서버 오류 (${res.status})`; try { const j = await res.json(); msg = j.detail || msg; } catch {} throw new Error(msg); }
     return res;
   }
 
-  // ── Convert ────────────────────────────────────────────────────
   convertBtn.addEventListener('click', async () => {
     if (!selectedFile) return;
     hideError(); hideResult();
@@ -597,17 +760,12 @@
     optimizeBtn.disabled = true;
     try {
       const res = await doRequest('/api/convert', buildFD({ format: formatSelect.value, quality: qualityRange.value }));
-      const cd  = res.headers.get('Content-Disposition') || '';
-      const fn  = (cd.match(/filename="([^"]+)"/) || [])[1] || `image_slimpic.${formatSelect.value}`;
+      const fn = (res.headers.get('Content-Disposition') || '').match(/filename="([^"]+)"/)?.[1] || `image_slimpic.${formatSelect.value}`;
       showResult(res, await res.blob(), fn);
     } catch (e) { showError(e.message); }
-    finally {
-      resetBtn(convertBtn, convertBtnIcon, origConvertIcon, convertBtnText, '변환하기');
-      optimizeBtn.disabled = !selectedFile;
-    }
+    finally { resetBtn(convertBtn, convertBtnIcon, origConvertIcon, convertBtnText, '변환하기'); optimizeBtn.disabled = !selectedFile; }
   });
 
-  // ── Optimize ───────────────────────────────────────────────────
   optimizeBtn.addEventListener('click', async () => {
     if (!selectedFile) return;
     hideError(); hideResult();
@@ -615,14 +773,10 @@
     convertBtn.disabled = true;
     try {
       const res = await doRequest('/api/optimize', buildFD());
-      const cd  = res.headers.get('Content-Disposition') || '';
-      const fn  = (cd.match(/filename="([^"]+)"/) || [])[1] || 'image_optimized.webp';
+      const fn = (res.headers.get('Content-Disposition') || '').match(/filename="([^"]+)"/)?.[1] || 'image_optimized.webp';
       showResult(res, await res.blob(), fn);
     } catch (e) { showError(e.message); }
-    finally {
-      resetBtn(optimizeBtn, optimizeBtnIcon, origOptimizeIcon, optimizeBtnText, 'SlimPic Optimize');
-      convertBtn.disabled = !selectedFile;
-    }
+    finally { resetBtn(optimizeBtn, optimizeBtnIcon, origOptimizeIcon, optimizeBtnText, 'SlimPic Optimize'); convertBtn.disabled = !selectedFile; }
   });
 </script>
 </body>
